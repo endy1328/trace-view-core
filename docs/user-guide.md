@@ -98,6 +98,40 @@ curl -X POST http://localhost:8080/api/analysis/run \
 
 분석이 끝나면 UI를 새로고침하거나 다시 열면 Snapshot 정보가 보인다.
 
+adapter를 함께 지정할 수도 있다.
+
+예시:
+
+```bash
+curl -X POST http://localhost:8080/api/analysis/run \
+  -H 'Content-Type: application/json' \
+  -d '{"rootPath":"/home/u24/projects/AStore","adapterId":"astore-legacy"}'
+```
+
+현재 지원 adapter:
+
+- `spring-standard`
+- `astore-legacy`
+- `astore-web-mvc`
+- `astore-batch-legacy`
+- `astore-lib-shared`
+
+모듈 자동 분류도 가능하다.
+
+```bash
+curl -X POST http://localhost:8080/api/analysis/classify-modules \
+  -H 'Content-Type: application/json' \
+  -d '{"rootPath":"/home/u24/projects/AStore"}'
+```
+
+현재 AStore 기준 추천:
+
+- `AStore-batch-backend` -> `astore-batch-legacy`
+- `AStore-Admin` -> `astore-web-mvc`
+- `AStore-Carrier` -> `astore-web-mvc`
+- `AStore-Seller` -> `astore-web-mvc`
+- `AStore-lib` -> `astore-lib-shared`
+
 ## 7. 가장 쉬운 사용 순서
 
 처음 사용하는 경우 아래 순서가 가장 이해하기 쉽다.
@@ -420,9 +454,8 @@ mvn -Dmaven.repo.local=.m2/repository spring-boot:run
 
 ## 12. 현재 한계
 
-- 실제 외부 대상 코드베이스 연결은 아직 미구현
-- adapter 범위는 아직 미구현
-- runtime trace는 아직 미구현
+- AStore용 adapter는 공통 canonicalization과 모듈 분류까지 반영됐지만 XML handler mapping, batch shell/job graph, shared provider 외부 호출 규칙은 더 깊게 넣을 여지가 있다
+- runtime trace는 세션/이벤트 ingest와 correlation API까지 구현됐지만 실제 브라우저 자동 수집 SDK는 아직 없다
 - 클라이언트 브라우저 상호작용 테스트는 아직 얕다
 - 저장소는 인메모리 기반이라 영속 저장이 없다
 

@@ -10,10 +10,12 @@ Trace View Core는 Spring 애플리케이션의 `endpoint -> handler -> service 
 - graph / node detail / service chain 조회 API 구현 완료
 - annotation 생성, approve, reject용 review API 구현 완료
 - runtime trace session / event ingest / correlation API 구현 완료
+- adapter framework, `astore-legacy` canonicalization, 세부 adapter 분류 구현 완료
+- 모듈 자동 분류 API와 세부 adapter 추천 기능 구현 완료
 - 정적 제품 레이어 UI 구현 완료
 - 검색, 노드/엔드포인트 상세, 그래프, 리뷰 화면 제공
 - 내장 샘플 프로젝트 기준 통합 테스트 완료
-- adapter, 실제 외부 대상 코드베이스 연결은 아직 미구현
+- 실제 외부 대상 코드베이스 AStore 구조 분석 완료, 모듈별 규칙 심화는 진행 중
 
 ## 요구 사항
 
@@ -43,7 +45,7 @@ mvn -Dmaven.repo.local=.m2/repository test
 
 현재 기준 기대 결과:
 
-- `Tests run: 18, Failures: 0, Errors: 0, Skipped: 0`
+- `Tests run: 23, Failures: 0, Errors: 0, Skipped: 0`
 
 ## 빠른 확인 순서
 
@@ -53,6 +55,14 @@ mvn -Dmaven.repo.local=.m2/repository test
 curl -X POST http://localhost:8080/api/analysis/run \
   -H 'Content-Type: application/json' \
   -d '{"rootPath":"/home/u24/projects/trace_view_core/samples/spring-reference-app"}'
+```
+
+adapter를 지정하려면 `adapterId`를 함께 보낸다.
+
+```bash
+curl -X POST http://localhost:8080/api/analysis/run \
+  -H 'Content-Type: application/json' \
+  -d '{"rootPath":"/home/u24/projects/AStore","adapterId":"astore-legacy"}'
 ```
 
 Windows에서 호출할 때는 셸에 따라 quoting 규칙이 다르다.
@@ -81,6 +91,36 @@ curl.exe -X POST http://localhost:8080/api/analysis/run `
 - 불가: `\\wsl.localhost\Ubuntu-24.04\...`
 
 `cmd.exe`에서 작은따옴표는 quoting에 사용되지 않으므로 `-H 'Content-Type: application/json'` 형태는 `415 Unsupported Media Type`를 만들 수 있다.
+
+현재 지원 adapter:
+
+- `spring-standard`: 기본 Spring 표준 규칙
+- `astore-legacy`: AStore 레거시 Spring MVC / ServiceImpl / Biz / DAO 규칙 보강 및 interface/impl canonicalization
+- `astore-web-mvc`: AStore 웹 MVC 모듈용 adapter
+- `astore-batch-legacy`: AStore batch/iBatis 모듈용 adapter
+- `astore-lib-shared`: AStore 공통 라이브러리 모듈용 adapter
+
+모듈 자동 분류:
+
+```bash
+curl -X POST http://localhost:8080/api/analysis/classify-modules \
+  -H 'Content-Type: application/json' \
+  -d '{"rootPath":"/home/u24/projects/AStore"}'
+```
+
+현재 AStore 기준 분류 결과:
+
+- `AStore-batch-backend` -> `astore-batch-legacy`
+- `AStore-Admin` -> `astore-web-mvc`
+- `AStore-Carrier` -> `astore-web-mvc`
+- `AStore-Seller` -> `astore-web-mvc`
+- `AStore-lib` -> `astore-lib-shared`
+
+현재 구조 분석 결론:
+
+- `AStore-ear-backend` 아래 `Admin`, `Carrier`, `Seller`, `lib`가 웹/공용 라이브러리 축
+- `AStore-batch-backend`는 XML 중심 레거시 배치 축
+- adapter 세분화 단위는 `웹 3개 + 배치 1개 + 공유 라이브러리 1개`가 적절
 
 ### 2. 최신 스냅샷 조회
 

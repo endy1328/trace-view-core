@@ -25,8 +25,13 @@ public class AnalysisOrchestrator {
     }
 
     public AnalysisRunResponse run(String rootPath) throws IOException {
+        return run(rootPath, null);
+    }
+
+    public AnalysisRunResponse run(String rootPath, String adapterId) throws IOException {
         AnalysisContext context = sourceScanner.scan(Path.of(rootPath));
-        var graph = analysisPipeline.analyze(context);
+        String resolvedAdapterId = adapterId == null || adapterId.isBlank() ? "spring-standard" : adapterId;
+        var graph = analysisPipeline.analyze(context, resolvedAdapterId);
         AnalysisSnapshot snapshot = new AnalysisSnapshot(
                 IdGenerator.newId("snapshot"),
                 rootPath,
@@ -37,6 +42,7 @@ public class AnalysisOrchestrator {
         return new AnalysisRunResponse(
                 snapshot.id(),
                 snapshot.rootPath(),
+                resolvedAdapterId,
                 snapshot.createdAt(),
                 graph.nodes().size(),
                 graph.relations().size(),

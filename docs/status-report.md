@@ -21,7 +21,7 @@
 | 10 | Pre-Dev | Implementation Plan | Main | Done | Validated | 100 | 2026-03-26 | 제품 레이어 전환 기준으로 유지 | 없음 |
 | 11 | Pre-Dev | Task Board | Main / Status Agent | Done | Validated | 100 | 2026-03-26 | 제품 레이어 DEV-014 이후 항목 추적 | 문서 정합성 완료, 개발 보드는 계속 활성 |
 | 12 | Pre-Dev | Target Codebase Intake | Main | Done | Validated | 100 | 2026-03-26 | 실제 외부 대상 코드베이스 연결 대기 | 실제 대상 코드 필요 |
-| 13 | Pre-Dev | Repo Structure Analysis | Explorer | On Hold | On Hold | 10 | 2026-03-26 | 실제 외부 대상 코드 연결 즉시 분석 시작 | 실제 대상 코드 필요 |
+| 13 | Pre-Dev | Repo Structure Analysis | Explorer | Done | Validated | 100 | 2026-03-27 | module별 adapter 규칙 심화 | XML/action/batch 세부 규칙은 후속 |
 | 14 | Strategy | Spring Product Strategy | Main / Spring Strategy Track Agent | Done | Validated | 100 | 2026-03-26 | 유지 | 없음 |
 | 15 | Strategy | Spring Scope / Plugin Design | Main / Spring Strategy Track Agent | Done | Validated | 100 | 2026-03-26 | 유지 | 없음 |
 | 16 | Dev | Spring Core Scaffold | Main | Done | Validated | 100 | 2026-03-26 | 샘플 프로젝트 확장 검증 및 제품 레이어 전환 | 없음 |
@@ -33,6 +33,8 @@
 | 22 | Dev | Review UI | Main / UI Worker | Done | Validated | 100 | 2026-03-27 | 클라이언트 라우팅/상호작용 자동화 검토 | 브라우저 레벨 검증 얕음 |
 | 23 | Dev | Runtime Trace Collection API | Main / Trace Worker | Done | Validated | 100 | 2026-03-27 | UI/SDK 연계 여부 검토 | 실제 브라우저 자동 수집은 후속 |
 | 24 | Dev | Runtime Trace Correlation API | Main / Trace Worker | Done | Validated | 100 | 2026-03-27 | correlation 시각화 확장 검토 | 정적 graph와의 운영 UX는 후속 |
+| 25 | Dev | Adapter Framework / AStore Legacy Adapter | Main | Done | Validated | 100 | 2026-03-27 | module별 규칙 확장 | canonicalization 완료, XML/action 세부 규칙은 후속 |
+| 26 | Dev | Module Classification / Adapter Recommendation API | Main | Done | Validated | 100 | 2026-03-27 | module별 adapter 세분화 진행 | module 내부 심화 규칙은 후속 |
 
 ## 수시 보고 포맷
 
@@ -54,7 +56,7 @@
 - 코드베이스 인수 문서와 구조 분석 템플릿 추가 완료
 - Spring 범용 제품 전략 및 Spring 전용 MVP 문서 추가 완료
 - MVP 검증용 로컬 Spring 샘플 프로젝트 선정 및 생성 완료
-- 실제 외부 대상 코드베이스 연결 작업은 별도 선행 항목으로 유지
+- 실제 외부 대상 코드베이스 AStore 연결 및 구조 분석 완료
 - Spring Boot 코어 스캐폴딩과 기본 분석기/API 구현 완료
 - Spring 표준 패턴 기준 endpoint -> service -> repository/external 흐름 검증 완료
 - Graph API, node detail, endpoint service chain 조회 API 보강 완료
@@ -64,5 +66,10 @@
 - 정적 UI 서빙, 빈 스냅샷 latest/graph 응답, API 예외 처리 검증 테스트 추가 완료
 - 시드된 query/review API 통합 테스트 추가 후 전체 테스트 16건 통과
 - runtime trace session / event ingest / correlation API 구현 및 통합 테스트 추가 완료
-- 전체 테스트 기준선은 18건 통과로 갱신
-- 다음 단계는 실제 외부 대상 코드베이스 연결, adapter 범위 정의, runtime trace UI/SDK 연계 검토
+- adapter framework와 `astore-legacy` adapter 구현, canonicalization 반영 완료
+- analysis API에서 `adapterId` 선택 및 unknown adapter 검증 추가 완료
+- module classifier와 adapter recommendation API 추가 후 AStore를 5개 단위로 분류 완료
+- 분류 결과는 batch, Admin, Carrier, Seller, lib 단위로 확인됨
+- AStore 구조 분석 결과 기준으로 웹 3개 + 배치 1개 + 공유 라이브러리 1개 단위 분리가 적절함을 확인
+- 전체 테스트 기준선은 23건 통과로 갱신
+- 다음 단계는 module별 XML/action/batch 세부 규칙 심화와 runtime trace UI/SDK 연계 검토

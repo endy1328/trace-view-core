@@ -45,6 +45,8 @@ public class ApiExceptionHandler {
     }
 
     private boolean isNotFound(String message) {
-        return message != null && message.toLowerCase().contains("not found");
+        return message != null
+                && message.toLowerCase().contains("not found")
+                && !message.toLowerCase().contains("analysis adapter");
     }
 }
