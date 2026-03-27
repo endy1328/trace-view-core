@@ -55,6 +55,33 @@ curl -X POST http://localhost:8080/api/analysis/run \
   -d '{"rootPath":"/home/u24/projects/trace_view_core/samples/spring-reference-app"}'
 ```
 
+Windows에서 호출할 때는 셸에 따라 quoting 규칙이 다르다.
+
+`cmd.exe` 예시:
+
+```bat
+curl -X POST http://localhost:8080/api/analysis/run ^
+  -H "Content-Type: application/json" ^
+  -d "{\"rootPath\":\"/home/u24/projects/trace_view_core/samples/spring-reference-app\"}"
+```
+
+PowerShell 예시:
+
+```powershell
+curl.exe -X POST http://localhost:8080/api/analysis/run `
+  -H "Content-Type: application/json" `
+  -d '{"rootPath":"/home/u24/projects/trace_view_core/samples/spring-reference-app"}'
+```
+
+서버가 WSL 또는 Linux에서 실행 중이면 Windows 경로 대신 Linux 경로를 보내야 한다.
+
+- 가능: `/home/u24/projects/...`
+- 가능: `/mnt/c/Users/<user>/IdeaProjects/...`
+- 불가: `C:\Users\...`
+- 불가: `\\wsl.localhost\Ubuntu-24.04\...`
+
+`cmd.exe`에서 작은따옴표는 quoting에 사용되지 않으므로 `-H 'Content-Type: application/json'` 형태는 `415 Unsupported Media Type`를 만들 수 있다.
+
 ### 2. 최신 스냅샷 조회
 
 분석 실행 전에는 `latest`와 `graph`가 비어 있을 수 있으며, 이 경우 `204 No Content`가 반환된다. 분석 결과를 보려면 먼저 1번을 실행한다.
