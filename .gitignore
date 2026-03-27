@@ -1,0 +1,23 @@
+/target/
+/.idea/
+*.iml
+/.gradle/
+/build/
+/.m2/
+/.vscode/
+
+# Logs
+*.log
+logs/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Local runtime artifacts
+*.pid
+*.seed
+*.out
+*.err

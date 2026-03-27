@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trace View Core</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="app-sidebar">
+        <a class="brand" href="#/search">
+            <span class="brand-mark">TV</span>
+            <span class="brand-copy">
+                <strong>Trace View Core</strong>
+                <span>Spring flow explorer</span>
+            </span>
+        </a>
+        <nav class="app-nav">
+            <a href="#/search" data-nav="search">Search</a>
+            <a href="#/graph" data-nav="graph">Graph</a>
+            <a href="#/reviews" data-nav="reviews">Reviews</a>
+        </nav>
+        <section class="sidebar-card">
+            <p class="eyebrow">Snapshot</p>
+            <div id="snapshot-summary" class="snapshot-summary">
+                <strong>Not loaded</strong>
+                <span>Run analysis to inspect a snapshot.</span>
+            </div>
+        </section>
+    </aside>
+    <main class="app-main">
+        <header class="app-header">
+            <div>
+                <p class="eyebrow">MVP Product Layer</p>
+                <h1 id="page-title">Trace View Core</h1>
+            </div>
+            <div id="header-actions" class="header-actions"></div>
+        </header>
+        <section id="app-status" class="status-banner" hidden></section>
+        <section id="app-content" class="app-content"></section>
+    </main>
+</div>
+<script type="module" src="/app/main.js"></script>
+</body>
+</html>
